@@ -468,7 +468,8 @@
      (copy-object cred src-bucket src-key dest-bucket dest-key nil))
   ([cred src-bucket src-key dest-bucket dest-key metadata]
      (let [req (CopyObjectRequest. src-bucket src-key dest-bucket dest-key)]
-       (.setNewObjectMetadata req (map->ObjectMetadata metadata))
+       (when metadata
+         (.setNewObjectMetadata req (map->ObjectMetadata metadata)))
        (to-map (.copyObject (s3-client cred) req)))))
 
 (defn- map->ListVersionsRequest
